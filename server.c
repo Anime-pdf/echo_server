@@ -91,7 +91,7 @@ int main() {
 
     while (1) {
         socklen_t c_size = sizeof client;
-        if((newfd = accept(sockfd,(struct sockaddr*)&client, &c_size) == -1)) {
+        if((newfd = accept(sockfd,(struct sockaddr*)&client, &c_size)) == -1) {
             perror("server: accept");
             continue;
         }
