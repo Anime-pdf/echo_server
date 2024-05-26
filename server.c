@@ -57,7 +57,7 @@ int main() {
 
         if(setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof yes) == -1) {
             perror("server: setsockopt");
-            exit(1);
+            exit(2);
         }
 
         if(bind(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
@@ -70,14 +70,14 @@ int main() {
 
     if(p == NULL) {
         fprintf(stderr, "server: bind failed");
-        exit(1);
+        exit(3);
     }
 
     freeaddrinfo(result);
 
     if(listen(sockfd, 10) == -1) {
         perror("server: listen");
-        exit(0);
+        exit(4);
     }
 
     struct sigaction sa;
@@ -86,7 +86,7 @@ int main() {
     sa.sa_flags = SA_RESTART;
     if (sigaction(SIGCHLD, &sa, NULL) == -1) {
         perror("sigaction");
-        exit(1);
+        exit(5);
     }
 
     while (1) {
@@ -105,7 +105,7 @@ int main() {
             if(send(newfd, welcome, sizeof welcome, 0) == -1) {
                 perror("server: send");
                 close(newfd);
-                exit(0);
+                exit(6);
             }
 
             char recv_buf[1024];
@@ -118,14 +118,14 @@ int main() {
                 if(send(newfd, recv_buf, sizeof recv_buf, 0) == -1) {
                     perror("server: send");
                     close(newfd);
-                    exit(0);
+                    exit(7);
                 }
             }
 
             if(send(newfd, goodbye, sizeof goodbye, 0) == -1) {
                 perror("server: send");
                 close(newfd);
-                exit(0);
+                exit(8);
             }
 
             close(newfd);
